@@ -1,5 +1,5 @@
 % if name:
     Welcome, ${name}!
 % else:
-    oops!
+    No name in session
 % endif

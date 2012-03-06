@@ -21,6 +21,7 @@ def make_map(config):
     # CUSTOM ROUTES HERE
 
     map.connect('/login', controller='login')
+    map.connect('/logout', controller='logout')
     map.connect('/home', controller='home')
     map.connect('/{controller}/{action}')
     map.connect('/{controller}/{action}/{id}')
