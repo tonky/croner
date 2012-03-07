@@ -7,6 +7,7 @@ from paste.deploy.converters import asbool
 from pylons.middleware import ErrorHandler, StatusCodeRedirect
 from pylons.wsgiapp import PylonsApp
 from routes.middleware import RoutesMiddleware
+from repoze.who.config import make_middleware_with_config as make_who_with_config
 
 from croner.config.environment import load_environment
 
@@ -41,9 +42,11 @@ def make_app(global_conf, full_stack=True, static_files=True, **app_conf):
 
     # Routing/Session Middleware
     app = RoutesMiddleware(app, config['routes.map'], singleton=False)
-    app = SessionMiddleware(app, config)
 
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
+    app = make_who_with_config(app, config, app_conf['repoze.who.ini'])
+
+    app = SessionMiddleware(app, config)
 
     if asbool(full_stack):
         # Handle Python exceptions

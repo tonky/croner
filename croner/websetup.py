@@ -16,5 +16,3 @@ def setup_app(command, conf, vars):
     Base.metadata.create_all(bind=Session.bind)
     fixture(Session)
     Session.commit()
-
-    print conf

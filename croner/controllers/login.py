@@ -5,6 +5,7 @@ from pylons.controllers.util import abort, redirect
 
 from croner.lib.base import BaseController, render, Session
 from croner.model import User
+from repoze.who.api import get_api
 
 log = logging.getLogger(__name__)
 
@@ -13,15 +14,15 @@ class LoginController(BaseController):
         return render('/login.mako')
 
     def save(self):
-        login = request.params['login']
-        password = request.params['password']
+        login = request.POST['login']
+        password = request.POST['password']
 
         user = Session.query(User).filter_by(login=login, passwd=password).first()
 
         if not user:
             return render('/login.mako', {'error': 'wrong credentials'})
 
-        session['user'] = user.name
+        session['logged_user'] = {'login': user.login, 'name': user.name}
         session.save()
 
         redirect(url(controller='home'))
